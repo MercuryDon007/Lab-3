@@ -1,201 +1,74 @@
-// TopStreamingArtist class
+public class TopStreamingArtists {
+    Aritist head = null;
 
-public class TopStreamingArtist {
+    static class Aritist {
+        public String name;
+        public Aritist next;
 
-    private Artist first;
-
-    private Artist last;
-
-    // inner class Artist
-
-    class Artist {
-
-        // data fields
-
-        private String name;
-
-        private Artist next;
-
-        // constructor for Artist class
-
-        public Artist(String name) {
-
+        public Aritist(String name) {
             this.name = name;
-
             this.next = null;
-
         }
-
     }
 
-    // constructor for TopStreamingArtist class
-
-    public TopStreamingArtist() {
-
-        // initialising first and last to null
-
-        first = null;
-
-        last = null;
-
-    }
-
-    // isEmpty method
-
-    public boolean isEmpty() {
-
-        return (first == null);
-
-    }
-
-    // insert method
-
-    void insert(String name) {
-
-        // creating new artist object
-
-        Artist newArtist = new Artist(name);
-
-        if (this.isEmpty()) {
-
-            // if this list is empty
-
-            // setting first and last to newArtist
-
-            first = newArtist;
-
-            last = newArtist;
-
-        } else {
-
-            // otherwise setting last.next to newArtist
-
-            last.next = newArtist;
-
-            // last to newArtist
-
-            last = newArtist;
-
+    public static void main(String[] args) throws IOException {
+        TopStreamingArtists list = new TopStreamingArtists();
+        //use this String array or read from text file
+        String[] a1 = {"abc", "w", "ab", "z","b"};
+        for(String s: a1)
+            list.add(s);
+        list.display();
+        /**************************************************
+         *************************************************/
+        //Reading from text file
+        File file = new File("C:\\Users\\rohith\\Desktop\\test.txt");
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        String st;
+        while ((st = br.readLine()) != null) {
+                list.add(s);
         }
-
+        list.display();
     }
 
-    // sortList ...to sort names
-
-    public void sortList() {
-
-        // initialising current and index
-
-        Artist current = first, index = null;
-
-        String temp; // to store temporary name
-
-        if (this.isEmpty()) {
-
-            // if empty return
-
+    /**
+     *
+     * @param name Adds the name in appropriate position in the list
+     */
+    public void add(String name) {
+        Aritist curr = head;
+        if (curr == null) {
+            head = new Aritist(name);
             return;
-
-        } else {
-
-            // otherwise
-
-            while (current != null) {
-
-                // setting index to current -> next
-
-                index = current.next;
-
-                while (index != null) {
-
-                    // if current ->name is alphabetically higher then index->name the swap them
-
-                    if (current.name.compareTo(index.name) > 0) {
-
-                        temp = current.name;
-
-                        current.name = index.name;
-
-                        index.name = temp;
-
-                    }
-
-                    index = index.next; // increment index
-
-                }
-
-                current = current.next; // increment current
-
-            }
-
         }
-
-    }
-
-    // displayNames() method
-
-    public void displayNames() {
-
-        // setting current to first
-
-        Artist current = first;
-
-        this.sortList(); // calling sortList to sort it
-
-        if (this.isEmpty()) {
-
-            // if empty print message and return
-
-            System.out.println("List is empty");
-
+        if(name.compareTo(head.name) < 0) {
+            Aritist n = new Aritist(name);
+            n.next = head;
+            head = n;
             return;
+        }
+        Aritist prev = null;
+        while (curr != null && curr.name.compareTo(name) < 0) {
+            prev = curr;
+            curr = curr.next;
 
         }
-
-        while (current != null) {
-
-            // other while current is not null
-
-            // print the names
-
-            System.out.println(current.name);
-
-            current = current.next; // inrement current
-
+        if (curr != null) {
+            Aritist temp = curr;
+            prev.next = new Aritist(name);
+            prev.next.next = temp;
         }
-
+        else {
+            prev.next = new Aritist(name);
+        }
     }
 
-    public static void main(String[] args) {
-
-        // creating object of TopStreamingArtist class
-
-        TopStreamingArtist artistNames = new TopStreamingArtist();
-
-        // adding some names
-
-        artistNames.insert("Stage Name");
-
-        artistNames.insert("Lady Gaga");
-
-        artistNames.insert("Nick Johns");
-
-        artistNames.insert("Taylor Swift");
-
-        artistNames.insert("Justin Bieber");
-
-        artistNames.insert("Chris Brown");
-
-        artistNames.insert("Bruno Mars");
-
-        artistNames.insert("Adele");
-
-        artistNames.insert("Beyonce");
-
-        // calling displauyNames ot print them
-
-        artistNames.displayNames();
-
+    /**
+     * Prints the numbers in list
+     */
+    public void display() {
+        Aritist curr = head;
+        while (curr != null) {
+            System.out.println(curr.name + " ");
+            curr = curr.next;
+        }
     }
-
-}
